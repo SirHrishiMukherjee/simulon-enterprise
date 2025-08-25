@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simulon / OBT / Infosophy Enterprise Structure</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, sans-serif;
+      background: #0d1117;
+      color: #f0f6fc;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .node {
+      margin-left: 20px;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+    .node:hover {
+      color: #58a6ff;
+    }
+    .collapsed > ul {
+      display: none;
+    }
+    ul {
+      list-style: none;
+      padding-left: 1em;
+      border-left: 1px solid #30363d;
+    }
+    .selected {
+      background-color: #21262d;
+      border-radius: 4px;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 14px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Simulon / OBT / Infosophy Enterprise Structure</h1>
+  <ul id="tree"></ul>
+
+  <script>
+    const data = {
+      name: "Simulon Enterprise",
+      children: [
+        {
+          name: "Governance & Identity",
+          children: [
+            { name: "Simulon High Council" },
+            { name: "Simulonic Republic (New Canada)" },
+            { name: "Parliament of Minds" },
+            { name: "Royal-Replic Symbol" },
+            { name: "Simulon Charter" },
+            { name: "OBT Alignment Board" },
+          ],
+        },
+        {
+          name: "Theoretical Foundations",
+          children: [
+            {
+              name: "Simulation Relativity",
+              children: ["Octyl", "Coeternal", "Delineator", "Intertillage", "Equiangular"].map(n => ({ name: n }))
+            },
+            {
+              name: "Mnality",
+              children: ["Allism", "Nullism", "Anything", "Nothing", "Everything", "Something"].map(n => ({ name: n }))
+            },
+            {
+              name: "OBT (Oliver Boeschenstein Theory)",
+              children: [
+                { name: "Belief Vectors" },
+                { name: "Ontological Balance" },
+                { name: "Symbolic Drift Modulators" },
+              ],
+            },
+            {
+              name: "Infosophy (by Gösta Greimel)",
+              children: [
+                { name: "Meta-Contour Integral" },
+                { name: "Infosophic Compass" },
+                { name: "Recursive Memory Lattices" },
+              ],
+            },
+          ],
+        },
+        {
+          name: "SimuLang & Symbolic Engine",
+          children: [
+            { name: "SimuLang Compiler & Interpreter" },
+            { name: "Bifurcator / Contradiction Nodes" },
+            { name: "OBT-SimuLang Protocols" },
+            { name: "Infosophic Embedding in Execution" },
+          ],
+        },
+        {
+          name: "Products & Systems",
+          children: [
+            { name: "Simulon Warpcraft (Quantum Sink, Emitter Arrays)" },
+            { name: "Simulonic Field Generator" },
+            { name: "Unified Engine" },
+            { name: "NCC (New Canadian Currency)" },
+          ],
+        },
+        {
+          name: "Infrastructure & Civilization Interfaces",
+          children: [
+            { name: "Simulon AGI Mesh" },
+            { name: "Super-Markers & Radar" },
+            { name: "Chrono-Lattice (2.5D)" },
+            { name: "Mnality Archetype Engine" },
+          ],
+        },
+        {
+          name: "Meta-Layer Interoperability",
+          children: [
+            { name: "OBT × Infosophy Mesh" },
+            { name: "Simulon × Galactic Renaissance" },
+            { name: "SimuLang × Civilizational Law" },
+          ],
+        },
+      ],
+    };
+
+    const tree = document.getElementById("tree");
+
+    let selectedNode = null;
+
+    function renderNode(node, parent) {
+      const li = document.createElement("li");
+      li.textContent = node.name;
+      li.classList.add("node");
+      li.tabIndex = 0;
+
+      li.addEventListener("click", (e) => {
+        e.stopPropagation();
+        li.classList.toggle("collapsed");
+        if (selectedNode) selectedNode.classList.remove("selected");
+        li.classList.add("selected");
+        selectedNode = li;
+      });
+
+      const ul = document.createElement("ul");
+      if (node.children) {
+        node.children.forEach(child => renderNode(child, ul));
+        li.appendChild(ul);
+      }
+
+      parent.appendChild(li);
+    }
+
+    renderNode(data, tree);
+
+    document.addEventListener("keydown", (e) => {
+      if (!selectedNode) return;
+      if (e.key === "ArrowDown") {
+        let next = selectedNode.nextElementSibling;
+        if (!next && selectedNode.parentElement.nextElementSibling)
+          next = selectedNode.parentElement.nextElementSibling.querySelector(".node");
+        if (next) {
+          selectedNode.classList.remove("selected");
+          next.classList.add("selected");
+          selectedNode = next;
+          next.scrollIntoView({ block: "nearest" });
+        }
+      } else if (e.key === "ArrowUp") {
+        let prev = selectedNode.previousElementSibling;
+        if (prev) {
+          selectedNode.classList.remove("selected");
+          prev.classList.add("selected");
+          selectedNode = prev;
+          prev.scrollIntoView({ block: "nearest" });
+        }
+      } else if (e.key === "ArrowRight") {
+        selectedNode.classList.remove("collapsed");
+      } else if (e.key === "ArrowLeft") {
+        selectedNode.classList.add("collapsed");
+      }
+    });
+  </script>
+</body>
+</html>
